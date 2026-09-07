@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <cs50.h>
+
+int main(void)
+{
+    //ask user to input a file name 
+    string user_input  = get_string("please enter a file name. > ");
+    //open the file with read permissions
+    FILE *open_file = fopen(user_input, "r");
+
+    //check if file does exists
+    while (open_file == NULL)
+    {
+        user_input = get_string("cannot find file.. please try again(CASE SENSITIVE): > ");
+        open_file = fopen(user_input, "r");
+    }
+
+    //declare variables
+    int char_count = 0;
+    int word_count = 0;
+    int line_count = 0;
+    int current_char = fgetc(open_file); 
+
+
+    //loop trough the charachters and check its type(char, word, newline)
+    while (current_char != EOF)
+    {
+        char_count++;
+
+        if (current_char == ' ')
+        {
+            word_count++;
+        }
+        if (current_char == '\n')
+        {
+            line_count++;
+        }
+
+        //this will fetch the next char
+        current_char = fgetc(open_file);
+    }
+
+    //print out the result of the operation
+    printf("characters counted: %d\nWords counted: %d\nlines counted: %d\n", char_count, word_count, line_count);
+}
