@@ -4,8 +4,12 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 
-//max characters avaiable
+//prototypes
+int change_dir(char **args);
+
+//constants 
 const int MAX_CHAR = 100;
+const int MAX_ARGS = 11;
 
 int main(void)
 {
@@ -22,7 +26,7 @@ int main(void)
             continue;
         }
 
-        //compare newline with user input and point \0 to \n
+        //compare newline with input and point \0 to \n
         char *newline = strchr(user_input, '\n');
         if (newline != NULL){
             *newline = '\0';
@@ -35,15 +39,19 @@ int main(void)
             return 0;
         }
 
+        //execute cd function
+        //TODO: get change dir to execute
+        
+
         //create token and init an integer
         int i = 0;
-        char *args[11];
+        char *args[MAX_ARGS];
         args[0] = NULL;
         char *token = strtok(user_input, " ");
         
         //loop trough the str and argvs
         while(token != NULL){
-            if(i >= 10){
+            if(i >= MAX_ARGS){
                 printf("too many arguments, max 10\n");
                 break;
             }
@@ -65,5 +73,19 @@ int main(void)
             waitpid(pid, NULL, 0);
         }  
     }
+    return 0;
+}
+//change directory function
+int change_dir(char **args){
+    //store current working dir
+    char buffer[1024];
+    
+    //check if return NULL
+    //!TODO: get sizeOf not hardcoded numbers
+    if (getcwd(buffer, sizeof(buffer)) == NULL){
+        perror(getcwd(buffer, sizeof(buffer)));
+        return 1;
+    }
+    //!TODO: chdir and get pwd 
     return 0;
 }
